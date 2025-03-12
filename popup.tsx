@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
-import { Loader } from "~loader"
-import { Signin } from "~signin"
+import { Loader } from "~components/loader"
+import { Signin } from "~components/signin"
 
 const supabase = createClient(
   process.env.PLASMO_PUBLIC_SUPABASE_URL,
@@ -56,77 +56,60 @@ function IndexPopup() {
     }
   }
 
-  const signOut = async () => {
-    try {
-      await supabase.auth.signOut()
-    } catch (error) {
-      console.error("Error signing out:", error)
-    }
+  const handleShowCurrentTabUrl = async () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      const url = tabs[0]?.url || "Unable to get URL"
+
+      try {
+        const {
+          data: { session }
+        } = await supabase.auth.getSession()
+        if (!session) {
+          console.error("No active session")
+          return
+        }
+
+        const response = await fetch("http://localhost:3000/api/link", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ url })
+        }).then((res) => res.json())
+
+        console.log("API Response:", response)
+      } catch (error) {
+        console.error("Error sending URL:", error)
+      }
+    })
   }
 
   return (
     <div
       style={{
-        padding: 16,
+        padding: 0,
         width: 300,
         fontFamily: "Arial, sans-serif"
       }}>
       {loading ? (
         <Loader />
       ) : user ? (
-        <div
+        <button
+          onClick={handleShowCurrentTabUrl}
           style={{
-            border: "1px solid #e1e4e8",
+            width: "100%",
+            padding: "8px 12px",
+            background: "#f3f4f6",
+            color: "#24292e",
+            border: "1px solid #d1d5db",
             borderRadius: 6,
-            padding: 16,
-            marginBottom: 16
+            cursor: "pointer",
+            fontWeight: "bold",
+            fontSize: 14
           }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: 12
-            }}>
-            <img
-              src={
-                user.user_metadata?.avatar_url ||
-                "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-              alt="Avatar"
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                marginRight: 12
-              }}
-            />
-            <div>
-              <div style={{ fontWeight: "bold" }}>
-                {user.user_metadata?.name ||
-                  user.user_metadata?.user_name ||
-                  user.email ||
-                  "GitHub User"}
-              </div>
-              <div style={{ fontSize: 12, color: "#6a737d" }}>{user.email}</div>
-            </div>
-          </div>
-
-          <button
-            onClick={signOut}
-            style={{
-              width: "100%",
-              padding: "8px 12px",
-              background: "#f3f4f6",
-              color: "#24292e",
-              border: "1px solid #d1d5db",
-              borderRadius: 6,
-              cursor: "pointer",
-              fontWeight: "bold",
-              fontSize: 14
-            }}>
-            Sign Out
-          </button>
-        </div>
+          Show Current Tab URL
+        </button>
       ) : (
         <Signin loading={loading} signInWithGitHub={signInWithGitHub} />
       )}
