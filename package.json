@@ -34,8 +34,12 @@
     ],
     "web_accessible_resources": [
       {
-        "resources": ["auth-callback.html"],
-        "matches": ["<all_urls>"]
+        "resources": [
+          "auth-callback.html"
+        ],
+        "matches": [
+          "<all_urls>"
+        ]
       }
     ]
   },

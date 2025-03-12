@@ -6,7 +6,7 @@ const supabase = createClient(
   process.env.PLASMO_PUBLIC_SUPABASE_KEY
 )
 
-function AuthCallback() {
+export default function AuthCallback() {
   const [status, setStatus] = useState("Processing authentication...")
 
   useEffect(() => {
@@ -68,6 +68,3 @@ function AuthCallback() {
     </div>
   )
 }
-
-export default AuthCallback
-

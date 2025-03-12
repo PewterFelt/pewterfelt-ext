@@ -1,11 +1,48 @@
-import React from "react"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(
+  process.env.PLASMO_PUBLIC_SUPABASE_URL,
+  process.env.PLASMO_PUBLIC_SUPABASE_KEY
+)
 
 type SigninProps = {
   loading: boolean
-  signInWithGitHub: () => void
+  setLoading: (loading: boolean) => void
+  onSignIn: () => void
 }
 
-export const Signin = ({ loading, signInWithGitHub }: SigninProps) => {
+export const Signin = ({ loading, setLoading, onSignIn }: SigninProps) => {
+  const signInWithGitHub = async () => {
+    setLoading(true)
+
+    try {
+      const extensionCallbackUrl = chrome.runtime.getURL(
+        "tabs/auth-callback.html"
+      )
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          skipBrowserRedirect: true,
+          redirectTo: extensionCallbackUrl
+        }
+      })
+
+      if (error) throw error
+
+      if (data?.url) {
+        chrome.tabs.create({ url: data.url })
+        onSignIn()
+      } else {
+        throw new Error("No authentication URL returned from Supabase")
+      }
+    } catch (error) {
+      console.error("Error signing in with GitHub:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div style={{ textAlign: "center", marginBottom: 16 }}>
       <button
