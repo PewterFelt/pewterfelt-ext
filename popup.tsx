@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { SaveUrl } from "~components/save-url"
 import { Signin } from "~components/signin"
 
+import "~style.css"
+
 const supabase = createClient(
   process.env.PLASMO_PUBLIC_SUPABASE_URL,
   process.env.PLASMO_PUBLIC_SUPABASE_KEY
@@ -38,26 +40,6 @@ function IndexPopup() {
       ) : (
         <Signin loading={loading} setLoading={setLoading} onSignIn={() => {}} />
       )}
-
-      {/* <div */}
-      {/*   style={{ */}
-      {/*     borderTop: "1px solid #e1e4e8", */}
-      {/*     paddingTop: 16, */}
-      {/*     marginTop: 16 */}
-      {/*   }}> */}
-      {/*   <a */}
-      {/*     href="https://docs.plasmo.com" */}
-      {/*     target="_blank" */}
-      {/*     style={{ */}
-      {/*       display: "block", */}
-      {/*       textAlign: "center", */}
-      {/*       fontSize: 12, */}
-      {/*       color: "#0366d6", */}
-      {/*       textDecoration: "none" */}
-      {/*     }}> */}
-      {/*     Extension Documentation */}
-      {/*   </a> */}
-      {/* </div> */}
     </div>
   )
 }

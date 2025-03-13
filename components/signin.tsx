@@ -44,30 +44,19 @@ export const Signin = ({ loading, setLoading, onSignIn }: SigninProps) => {
   }
 
   return (
-    <div style={{ textAlign: "center", marginBottom: 16 }}>
+    <div className="plasmo-text-center plasmo-mb-4">
       <button
         onClick={signInWithGitHub}
         disabled={loading}
-        style={{
-          width: "100%",
-          padding: "10px 16px",
-          background: "#24292e",
-          color: "white",
-          border: "none",
-          borderRadius: 6,
-          cursor: loading ? "default" : "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          fontWeight: "bold",
-          fontSize: 14,
-          opacity: loading ? 0.7 : 1
-        }}>
+        className={`plasmo-w-full plasmo-py-2.5 plasmo-px-4 plasmo-bg-[#24292e] plasmo-text-white plasmo-border-none plasmo-rounded-md plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-2 plasmo-font-bold plasmo-text-sm ${
+          loading
+            ? "plasmo-opacity-70 plasmo-cursor-default"
+            : "plasmo-cursor-pointer"
+        }`}>
         {loading ? "Opening GitHub..." : "Sign in with GitHub"}
       </button>
 
-      <p style={{ fontSize: 12, color: "#6a737d", marginTop: 8 }}>
+      <p className="plasmo-text-xs plasmo-text-[#6a737d] plasmo-mt-2">
         Authentication will open in a new tab
       </p>
     </div>
