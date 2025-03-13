@@ -11,7 +11,7 @@ const supabase = createClient(
 
 function IndexPopup() {
   const [session, setSession] = useState<Session>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const {
@@ -31,7 +31,7 @@ function IndexPopup() {
         padding: 8,
         width: 300,
         fontFamily: "Arial, sans-serif",
-        backgroundColor: "#DBDFE5"
+        backgroundColor: "#ffffff"
       }}>
       {session ? (
         <SaveUrl session={session} />
@@ -39,25 +39,25 @@ function IndexPopup() {
         <Signin loading={loading} setLoading={setLoading} onSignIn={() => {}} />
       )}
 
-      <div
-        style={{
-          borderTop: "1px solid #e1e4e8",
-          paddingTop: 16,
-          marginTop: 16
-        }}>
-        <a
-          href="https://docs.plasmo.com"
-          target="_blank"
-          style={{
-            display: "block",
-            textAlign: "center",
-            fontSize: 12,
-            color: "#0366d6",
-            textDecoration: "none"
-          }}>
-          Extension Documentation
-        </a>
-      </div>
+      {/* <div */}
+      {/*   style={{ */}
+      {/*     borderTop: "1px solid #e1e4e8", */}
+      {/*     paddingTop: 16, */}
+      {/*     marginTop: 16 */}
+      {/*   }}> */}
+      {/*   <a */}
+      {/*     href="https://docs.plasmo.com" */}
+      {/*     target="_blank" */}
+      {/*     style={{ */}
+      {/*       display: "block", */}
+      {/*       textAlign: "center", */}
+      {/*       fontSize: 12, */}
+      {/*       color: "#0366d6", */}
+      {/*       textDecoration: "none" */}
+      {/*     }}> */}
+      {/*     Extension Documentation */}
+      {/*   </a> */}
+      {/* </div> */}
     </div>
   )
 }
