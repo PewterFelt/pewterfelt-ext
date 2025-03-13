@@ -37,17 +37,36 @@ export default function AuthCallback() {
     handleAuthCallback()
   }, [])
 
+  const getStatusColor = () => {
+    if (status.includes("successful")) {
+      return "#2e7d32"
+    } else if (status.includes("error")) {
+      return "#d32f2f"
+    } else {
+      return "#1976d2"
+    }
+  }
+
   return (
-    <div className="plasmo-p-6 plasmo-max-w-[500px] plasmo-mx-auto plasmo-font-sans plasmo-text-center">
+    <div
+      style={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        maxWidth: "500px",
+        padding: "1.5rem",
+        textAlign: "center",
+        fontFamily: "sans-serif"
+      }}>
       <h2>Pewterfelt Authentication</h2>
       <div
-        className={`plasmo-my-6 plasmo-p-4 plasmo-rounded-lg plasmo-bg-[#f0f2f5] ${
-          status.includes("successful")
-            ? "plasmo-text-[#2e7d32]"
-            : status.includes("error")
-              ? "plasmo-text-[#d32f2f]"
-              : "plasmo-text-[#1976d2]"
-        }`}>
+        style={{
+          marginTop: "1.5rem",
+          marginBottom: "1.5rem",
+          borderRadius: "0.5rem",
+          backgroundColor: "#f0f2f5",
+          padding: "1rem",
+          color: getStatusColor()
+        }}>
         <p>{status}</p>
       </div>
     </div>

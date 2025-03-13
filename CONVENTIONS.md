@@ -23,4 +23,3 @@
 - `.ts` files for utility functions
 - `popup.tsx` - Main entry point for the extension popup
 - Add `options.tsx` or `content.ts` to root for additional extension pages
-

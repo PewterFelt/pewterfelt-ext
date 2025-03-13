@@ -2,5 +2,13 @@
 module.exports = {
   content: ["./**/*.{tsx,html}"],
   darkMode: "media",
-  prefix: "plasmo-"
+  prefix: "plasmo-",
+  theme: {
+    extend: {
+      colors: {
+        "pewter-orange": "#f4a261",
+        "pewter-gray": "#909EAE"
+      }
+    }
+  }
 }

@@ -8,10 +8,9 @@ const supabase = createClient(
 type SigninProps = {
   loading: boolean
   setLoading: (loading: boolean) => void
-  onSignIn: () => void
 }
 
-export const Signin = ({ loading, setLoading, onSignIn }: SigninProps) => {
+export const Signin = ({ loading, setLoading }: SigninProps) => {
   const signInWithGitHub = async () => {
     setLoading(true)
 
@@ -32,7 +31,6 @@ export const Signin = ({ loading, setLoading, onSignIn }: SigninProps) => {
 
       if (data?.url) {
         chrome.tabs.create({ url: data.url })
-        onSignIn()
       } else {
         throw new Error("No authentication URL returned from Supabase")
       }
@@ -44,21 +42,17 @@ export const Signin = ({ loading, setLoading, onSignIn }: SigninProps) => {
   }
 
   return (
-    <div className="plasmo-text-center plasmo-mb-4">
-      <button
-        onClick={signInWithGitHub}
-        disabled={loading}
-        className={`plasmo-w-full plasmo-py-2.5 plasmo-px-4 plasmo-bg-[#24292e] plasmo-text-white plasmo-border-none plasmo-rounded-md plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-2 plasmo-font-bold plasmo-text-sm ${
-          loading
-            ? "plasmo-opacity-70 plasmo-cursor-default"
-            : "plasmo-cursor-pointer"
-        }`}>
+    <button
+      onClick={signInWithGitHub}
+      disabled={loading}
+      className={`plasmo-text-white plasmo-flex plasmo-w-full plasmo-items-center plasmo-justify-center plasmo-gap-2 plasmo-rounded-md plasmo-border-none plasmo-bg-[#24292e] plasmo-px-4 plasmo-py-2.5 plasmo-text-sm plasmo-font-bold ${
+        loading
+          ? "plasmo-cursor-default plasmo-opacity-70"
+          : "plasmo-cursor-pointer"
+      }`}>
+      <span className="plasmo-text-white">
         {loading ? "Opening GitHub..." : "Sign in with GitHub"}
-      </button>
-
-      <p className="plasmo-text-xs plasmo-text-[#6a737d] plasmo-mt-2">
-        Authentication will open in a new tab
-      </p>
-    </div>
+      </span>
+    </button>
   )
 }
