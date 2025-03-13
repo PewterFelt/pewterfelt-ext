@@ -59,10 +59,10 @@ function IndexPopup() {
         )}
       </div>
 
-      <div className="plasmo-flex plasmo-justify-around plasmo-p-2">
+      <div className="plasmo-flex plasmo-justify-around plasmo-pb-4 plasmo-pt-2">
         <button
           onClick={() => setActiveTab("main")}
-          className={`plasmo-rounded-lg plasmo-p-2 ${
+          className={`plasmo-rounded-lg ${
             activeTab === "main"
               ? "plasmo-text-pewter-orange"
               : "plasmo-text-gray-400"
@@ -72,7 +72,7 @@ function IndexPopup() {
 
         <button
           onClick={() => setActiveTab("options")}
-          className={`plasmo-relative plasmo-rounded-lg plasmo-p-2 ${
+          className={`plasmo-relative ${
             activeTab === "options"
               ? "plasmo-text-pewter-orange"
               : "plasmo-text-gray-400"

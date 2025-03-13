@@ -1,4 +1,9 @@
-import { BookmarkSimple, SpinnerGap } from "@phosphor-icons/react"
+import {
+  BookmarkSimple,
+  CheckCircle,
+  SpinnerGap,
+  XCircle
+} from "@phosphor-icons/react"
 import { type Session, type SupabaseClient } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
@@ -92,10 +97,16 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
         <button
           onClick={handleSaveCurrentUrl}
           disabled={isSaving || isLoading}
-          className={`plasmo-flex plasmo-items-center plasmo-justify-center plasmo-rounded-full plasmo-border plasmo-border-pewter-orange plasmo-bg-pewter-orange/20 plasmo-p-2 hover:plasmo-bg-pewter-orange/25 ${
+          className={`plasmo-flex plasmo-items-center plasmo-justify-center plasmo-rounded-full plasmo-border plasmo-p-2 ${
             isSaving
               ? "plasmo-cursor-default plasmo-opacity-70"
               : "plasmo-cursor-pointer"
+          } ${
+            saveStatus === "success"
+              ? "plasmo-border-[#2e7d32] plasmo-bg-[#2e7d32]/20 hover:plasmo-bg-[#2e7d32]/25"
+              : saveStatus === "error"
+                ? "plasmo-border-[#d32f2f] plasmo-bg-[#d32f2f]/20 hover:plasmo-bg-[#d32f2f]/25"
+                : "plasmo-border-pewter-orange plasmo-bg-pewter-orange/20 hover:plasmo-bg-pewter-orange/25"
           }`}
           aria-label={isSaving ? "Saving URL" : "Save URL"}>
           {isSaving || isLoading ? (
@@ -105,27 +116,19 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
               size={20}
               color="#f4a261"
             />
+          ) : saveStatus === "success" ? (
+            <CheckCircle weight="fill" size={20} color="#2e7d32" />
+          ) : saveStatus === "error" ? (
+            <XCircle weight="fill" size={20} color="#d32f2f" />
           ) : (
             <BookmarkSimple
               weight={isBookmarked ? "fill" : "duotone"}
               size={20}
-              color="#f4a261"
+              color={"#f4a261"}
             />
           )}
         </button>
       </div>
-
-      {saveStatus === "success" && (
-        <p className="plasmo-text-green-600 plasmo-mt-2 plasmo-text-center plasmo-text-xs">
-          URL saved successfully!
-        </p>
-      )}
-
-      {saveStatus === "error" && (
-        <p className="plasmo-text-red-600 plasmo-mt-2 plasmo-text-center plasmo-text-xs">
-          Error saving URL. Please try again.
-        </p>
-      )}
     </div>
   )
 }
