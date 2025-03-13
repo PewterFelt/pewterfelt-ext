@@ -1,23 +1,51 @@
 import { BookmarkSimple, SpinnerGap } from "@phosphor-icons/react"
-import { type Session } from "@supabase/supabase-js"
+import { type Session, type SupabaseClient } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
 type SaveUrlProps = {
+  supabase: SupabaseClient
   session: Session
 }
 
-export const SaveUrl = ({ session }: SaveUrlProps) => {
+export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">(
     "idle"
   )
   const [urlInput, setUrlInput] = useState("")
+  const [isBookmarked, setIsBookmarked] = useState(false)
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       setUrlInput(tabs[0]?.url || "")
     })
   }, [])
+
+  useEffect(() => {
+    if (!urlInput) return
+    ;(async () => {
+      try {
+        const { data: linkData, error: linkError } = await supabase
+          .from("links")
+          .select()
+          .eq("url", urlInput)
+
+        if (linkError || !linkData) {
+          setIsBookmarked(false)
+        }
+
+        const { data, error } = await supabase
+          .from("user_link")
+          .select("id")
+          .eq("user_id", session.user.id)
+          .eq("link_id", linkData[0].id)
+
+        setIsBookmarked(!!data && !error)
+      } catch (error) {
+        setIsBookmarked(false)
+      }
+    })()
+  }, [urlInput, session.user.id])
 
   const handleSaveCurrentUrl = async () => {
     setIsSaving(true)
@@ -35,6 +63,7 @@ export const SaveUrl = ({ session }: SaveUrlProps) => {
 
       console.log("API Response:", response)
       setSaveStatus("success")
+      setIsBookmarked(true)
     } catch (error) {
       console.error("Error sending URL:", error)
       setSaveStatus("error")
@@ -70,7 +99,11 @@ export const SaveUrl = ({ session }: SaveUrlProps) => {
               color="#f4a261"
             />
           ) : (
-            <BookmarkSimple weight="duotone" size={20} color="#f4a261" />
+            <BookmarkSimple
+              weight={isBookmarked ? "fill" : "duotone"}
+              size={20}
+              color="#f4a261"
+            />
           )}
         </button>
       </div>

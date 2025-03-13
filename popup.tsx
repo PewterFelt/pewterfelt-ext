@@ -36,7 +36,7 @@ function IndexPopup() {
         backgroundColor: "#ffffff"
       }}>
       {session ? (
-        <SaveUrl session={session} />
+        <SaveUrl supabase={supabase} session={session} />
       ) : (
         <Signin loading={loading} setLoading={setLoading} onSignIn={() => {}} />
       )}
