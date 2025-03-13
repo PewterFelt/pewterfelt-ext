@@ -14,6 +14,7 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
   )
   const [urlInput, setUrlInput] = useState("")
   const [isBookmarked, setIsBookmarked] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -32,6 +33,8 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
 
         if (linkError || !linkData) {
           setIsBookmarked(false)
+          setIsLoading(false)
+          return
         }
 
         const { data, error } = await supabase
@@ -41,8 +44,10 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
           .eq("link_id", linkData[0].id)
 
         setIsBookmarked(!!data && !error)
+        setIsLoading(false)
       } catch (error) {
         setIsBookmarked(false)
+        setIsLoading(false)
       }
     })()
   }, [urlInput, session.user.id])
@@ -75,37 +80,46 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
   return (
     <div>
       <div className="plasmo-flex plasmo-gap-2 plasmo-items-center">
-        <input
-          type="text"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          className="plasmo-flex-1 plasmo-px-3 plasmo-py-2 plasmo-bg-[#909EAE]/10 plasmo-rounded-md plasmo-text-sm"
-          placeholder="Enter URL to save"
-        />
-        <button
-          onClick={handleSaveCurrentUrl}
-          disabled={isSaving}
-          className={`plasmo-p-2 plasmo-bg-[#f4a261]/20 plasmo-border plasmo-border-[#f4a261] hover:plasmo-bg-[#f4a261]/25 plasmo-rounded-full plasmo-flex plasmo-items-center plasmo-justify-center ${
-            isSaving
-              ? "plasmo-opacity-70 plasmo-cursor-default"
-              : "plasmo-cursor-pointer"
-          }`}
-          aria-label={isSaving ? "Saving URL" : "Save URL"}>
-          {isSaving ? (
-            <SpinnerGap
-              weight="duotone"
-              className="plasmo-animate-spin"
-              size={20}
-              color="#f4a261"
+        {isLoading ? (
+          <>
+            <div className="plasmo-flex-1 plasmo-h-10 plasmo-bg-gray-200 plasmo-rounded-md plasmo-animate-pulse"></div>
+            <div className="plasmo-w-10 plasmo-h-10 plasmo-rounded-full plasmo-bg-gray-200 plasmo-animate-pulse"></div>
+          </>
+        ) : (
+          <>
+            <input
+              type="text"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              className="plasmo-flex-1 plasmo-px-3 plasmo-py-2 plasmo-bg-[#909EAE]/10 plasmo-rounded-md plasmo-text-sm"
+              placeholder="Enter URL to save"
             />
-          ) : (
-            <BookmarkSimple
-              weight={isBookmarked ? "fill" : "duotone"}
-              size={20}
-              color="#f4a261"
-            />
-          )}
-        </button>
+            <button
+              onClick={handleSaveCurrentUrl}
+              disabled={isSaving}
+              className={`plasmo-p-2 plasmo-bg-[#f4a261]/20 plasmo-border plasmo-border-[#f4a261] hover:plasmo-bg-[#f4a261]/25 plasmo-rounded-full plasmo-flex plasmo-items-center plasmo-justify-center ${
+                isSaving
+                  ? "plasmo-opacity-70 plasmo-cursor-default"
+                  : "plasmo-cursor-pointer"
+              }`}
+              aria-label={isSaving ? "Saving URL" : "Save URL"}>
+              {isSaving ? (
+                <SpinnerGap
+                  weight="duotone"
+                  className="plasmo-animate-spin"
+                  size={20}
+                  color="#f4a261"
+                />
+              ) : (
+                <BookmarkSimple
+                  weight={isBookmarked ? "fill" : "duotone"}
+                  size={20}
+                  color="#f4a261"
+                />
+              )}
+            </button>
+          </>
+        )}
       </div>
 
       {saveStatus === "success" && (
