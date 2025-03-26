@@ -64,14 +64,17 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
     setSaveStatus("idle")
 
     try {
-      const response = await fetch("http://localhost:3000/api/link", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ url: urlInput })
-      }).then((res) => res.json())
+      const response = await fetch(
+        `${process.env.PLASMO_PUBLIC_API_URL}/api/link`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ url: urlInput })
+        }
+      ).then((res) => res.json())
 
       console.log("API Response:", response)
       setSaveStatus("success")
@@ -91,7 +94,7 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
           type="text"
           value={urlInput}
           onChange={(e) => setUrlInput(e.target.value)}
-          className="plasmo-bg-pewter-gray/10 plasmo-flex-1 plasmo-rounded-md plasmo-px-4 plasmo-py-2.5 plasmo-text-sm"
+          className="plasmo-flex-1 plasmo-rounded-md plasmo-bg-pewter-gray/10 plasmo-px-4 plasmo-py-2.5 plasmo-text-sm"
           placeholder="Enter URL to save"
         />
         <button
