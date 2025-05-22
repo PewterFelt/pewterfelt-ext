@@ -52,8 +52,8 @@ importers:
         specifier: ^0.6.10
         version: 0.6.11(@ianvs/prettier-plugin-sort-imports@4.4.1(@vue/compiler-sfc@3.3.4)(prettier@3.2.4))(prettier@3.2.4)
       typescript:
-        specifier: 5.3.3
-        version: 5.3.3
+        specifier: 5.8.3
+        version: 5.8.3
 
 packages:
 
@@ -3213,8 +3213,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.3.3:
-    resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -6742,7 +6742,7 @@ snapshots:
 
   typescript@5.2.2: {}
 
-  typescript@5.3.3: {}
+  typescript@5.8.3: {}
 
   undici-types@5.26.5: {}
 
