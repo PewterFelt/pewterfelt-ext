@@ -1,8 +1,8 @@
 import {
-  BookmarkSimple,
-  CheckCircle,
-  SpinnerGap,
-  XCircle
+  BookmarkSimpleIcon,
+  CheckCircleIcon,
+  SpinnerGapIcon,
+  XCircleIcon
 } from "@phosphor-icons/react"
 import { type Session, type SupabaseClient } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
@@ -113,18 +113,18 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
           }`}
           aria-label={isSaving ? "Saving URL" : "Save URL"}>
           {isSaving || isLoading ? (
-            <SpinnerGap
+            <SpinnerGapIcon
               weight="duotone"
               className="plasmo-animate-spin"
               size={20}
               color="#f4a261"
             />
           ) : saveStatus === "success" ? (
-            <CheckCircle weight="fill" size={20} color="#2e7d32" />
+            <CheckCircleIcon weight="fill" size={20} color="#2e7d32" />
           ) : saveStatus === "error" ? (
-            <XCircle weight="fill" size={20} color="#d32f2f" />
+            <XCircleIcon weight="fill" size={20} color="#d32f2f" />
           ) : (
-            <BookmarkSimple
+            <BookmarkSimpleIcon
               weight={isBookmarked ? "fill" : "duotone"}
               size={20}
               color={"#f4a261"}

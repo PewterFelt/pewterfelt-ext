@@ -1,4 +1,4 @@
-import { GearSix, House } from "@phosphor-icons/react"
+import { GearSixIcon, HouseIcon } from "@phosphor-icons/react"
 import { createClient, type Session } from "@supabase/supabase-js"
 import arrowImage from "data-base64:~assets/arrow.png"
 import { useEffect, useState } from "react"
@@ -67,7 +67,7 @@ function IndexPopup() {
               ? "plasmo-text-pewter-orange"
               : "plasmo-text-gray-400"
           }`}>
-          <House weight="duotone" size={20} />
+          <HouseIcon weight="duotone" size={20} />
         </button>
 
         <button
@@ -84,7 +84,7 @@ function IndexPopup() {
               className="plasmo-absolute -plasmo-left-full plasmo-top-0 plasmo-w-[40px] -plasmo-translate-y-2/3 plasmo-translate-x-3 plasmo-scale-x-[-1]"
             />
           ) : null}
-          <GearSix weight="duotone" size={20} />
+          <GearSixIcon weight="duotone" size={20} />
         </button>
       </div>
     </div>
