@@ -24,8 +24,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       tailwindcss:
-        specifier: 3.4.1
-        version: 3.4.1
+        specifier: 3.4.17
+        version: 3.4.17
     devDependencies:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: 4.1.1
@@ -2500,10 +2500,6 @@ packages:
     resolution: {integrity: sha512-6b6gd/RUXKaw5keVdSEtqFVdzWnU5jMxTUjA2bVcMNPLwSQ08Sv/UodBVtETLCn7k4S1Ibxwh7k68IwLZPgKaA==}
     engines: {node: '>= 12.0.0'}
 
-  lilconfig@2.1.0:
-    resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
-    engines: {node: '>=10'}
-
   lilconfig@3.1.3:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
     engines: {node: '>=14'}
@@ -2805,6 +2801,10 @@ packages:
 
   postcss@8.4.33:
     resolution: {integrity: sha512-Kkpbhhdjw2qQs2O2DGX+8m5OVqEcbB9HRBvuYM9pgrjEFUg30A9LmXNlTAUj4S9kgtGyrMbTzVjH7E+s5Re2yg==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.5.3:
+    resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
 
   posthtml-parser@0.10.2:
@@ -3122,8 +3122,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  tailwindcss@3.4.1:
-    resolution: {integrity: sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==}
+  tailwindcss@3.4.17:
+    resolution: {integrity: sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -5996,8 +5996,6 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.29.2
       lightningcss-win32-x64-msvc: 1.29.2
 
-  lilconfig@2.1.0: {}
-
   lilconfig@3.1.3: {}
 
   lines-and-columns@1.2.4: {}
@@ -6325,17 +6323,17 @@ snapshots:
       - walrus
       - whiskers
 
-  postcss-import@15.1.0(postcss@8.4.33):
+  postcss-import@15.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.4.33
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.10
 
-  postcss-js@4.0.1(postcss@8.4.33):
+  postcss-js@4.0.1(postcss@8.5.3):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.33
+      postcss: 8.5.3
 
   postcss-load-config@4.0.2(postcss@8.4.33):
     dependencies:
@@ -6344,9 +6342,16 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.33
 
-  postcss-nested@6.2.0(postcss@8.4.33):
+  postcss-load-config@4.0.2(postcss@8.5.3):
     dependencies:
-      postcss: 8.4.33
+      lilconfig: 3.1.3
+      yaml: 2.7.0
+    optionalDependencies:
+      postcss: 8.5.3
+
+  postcss-nested@6.2.0(postcss@8.5.3):
+    dependencies:
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
   postcss-selector-parser@6.1.2:
@@ -6357,6 +6362,12 @@ snapshots:
   postcss-value-parser@4.2.0: {}
 
   postcss@8.4.33:
+    dependencies:
+      nanoid: 3.3.9
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.3:
     dependencies:
       nanoid: 3.3.9
       picocolors: 1.1.1
@@ -6628,7 +6639,7 @@ snapshots:
       picocolors: 1.1.1
       stable: 0.1.8
 
-  tailwindcss@3.4.1:
+  tailwindcss@3.4.17:
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -6639,16 +6650,16 @@ snapshots:
       glob-parent: 6.0.2
       is-glob: 4.0.3
       jiti: 1.21.7
-      lilconfig: 2.1.0
+      lilconfig: 3.1.3
       micromatch: 4.0.8
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.4.33
-      postcss-import: 15.1.0(postcss@8.4.33)
-      postcss-js: 4.0.1(postcss@8.4.33)
-      postcss-load-config: 4.0.2(postcss@8.4.33)
-      postcss-nested: 6.2.0(postcss@8.4.33)
+      postcss: 8.5.3
+      postcss-import: 15.1.0(postcss@8.5.3)
+      postcss-js: 4.0.1(postcss@8.5.3)
+      postcss-load-config: 4.0.2(postcss@8.5.3)
+      postcss-nested: 6.2.0(postcss@8.5.3)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
       sucrase: 3.35.0
