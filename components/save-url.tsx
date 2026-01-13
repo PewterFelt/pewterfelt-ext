@@ -4,15 +4,16 @@ import {
   SpinnerGapIcon,
   XCircleIcon
 } from "@phosphor-icons/react"
-import { type Session, type SupabaseClient } from "@supabase/supabase-js"
+import type PocketBase from "pocketbase"
+import { type RecordModel } from "pocketbase"
 import { useEffect, useState } from "react"
 
 type SaveUrlProps = {
-  supabase: SupabaseClient
-  session: Session
+  pb: PocketBase
+  session: RecordModel
 }
 
-export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
+export const SaveUrl = ({ pb, session }: SaveUrlProps) => {
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">(
     "idle"
@@ -33,31 +34,28 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
     setIsLoading(true)
     ;(async () => {
       try {
-        const { data: linkData, error: linkError } = await supabase
-          .from("links")
-          .select()
-          .eq("url", urlInput)
+        const linkRecords = await pb
+          .collection("links")
+          .getList(1, 1, { filter: `url = "${urlInput}"` })
 
-        if (linkError || !linkData) {
+        if (linkRecords.items.length === 0) {
           setIsBookmarked(false)
           setIsLoading(false)
           return
         }
 
-        const { data, error } = await supabase
-          .from("user_link")
-          .select("id")
-          .eq("user_id", session.user.id)
-          .eq("link_id", linkData[0].id)
+        const bookmarkRecords = await pb.collection("bookmarks").getList(1, 1, {
+          filter: `user_id = "${session.id}" && link_id = "${linkRecords.items[0].id}"`
+        })
 
-        setIsBookmarked(!!data && !error)
+        setIsBookmarked(bookmarkRecords.items.length > 0)
         setIsLoading(false)
       } catch (error) {
         setIsBookmarked(false)
         setIsLoading(false)
       }
     })()
-  }, [urlInput, session.user.id])
+  }, [urlInput, session.id])
 
   const handleSaveCurrentUrl = async () => {
     setIsSaving(true)
@@ -70,7 +68,7 @@ export const SaveUrl = ({ supabase, session }: SaveUrlProps) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`
+            Authorization: `Bearer ${pb.authStore.token}`
           },
           body: JSON.stringify({ url: urlInput })
         }

@@ -1,15 +1,18 @@
-import { type Session } from "@supabase/supabase-js"
+import type PocketBase from "pocketbase"
+import { type RecordModel } from "pocketbase"
 
 import { Signin } from "~components/signin"
 
 type OptionsProps = {
-  session: Session | null
+  pb: PocketBase
+  session: RecordModel | null
   onSignOut: () => void
   loading: boolean
   setLoading: (loading: boolean) => void
 }
 
 export const Options = ({
+  pb,
   session,
   onSignOut,
   loading,
@@ -23,7 +26,7 @@ export const Options = ({
         Sign Out
       </button>
     ) : (
-      <Signin loading={loading} setLoading={setLoading} />
+      <Signin pb={pb} loading={loading} setLoading={setLoading} />
     )}
   </div>
 )

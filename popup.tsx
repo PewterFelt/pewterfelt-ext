@@ -1,6 +1,6 @@
 import { GearSixIcon, HouseIcon } from "@phosphor-icons/react"
-import { createClient, type Session } from "@supabase/supabase-js"
 import arrowImage from "data-base64:~assets/arrow.png"
+import PocketBase, { type RecordModel } from "pocketbase"
 import { useEffect, useState } from "react"
 
 import { Options } from "~components/options"
@@ -8,33 +8,29 @@ import { SaveUrl } from "~components/save-url"
 
 import "~style.css"
 
-const supabase = createClient(
-  process.env.PLASMO_PUBLIC_SUPABASE_URL,
-  process.env.PLASMO_PUBLIC_SUPABASE_KEY
-)
+const pb = new PocketBase(process.env.PLASMO_PUBLIC_POCKETBASE_URL)
 
 function IndexPopup() {
   const [activeTab, setActiveTab] = useState<"main" | "options">("main")
-  const [session, setSession] = useState<Session>(null)
+  // PERF: this session state might not be needed
+  const [session, setSession] = useState<RecordModel | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (!error) {
-      setSession(null)
-      setActiveTab("main")
-    }
+  const handleSignOut = () => {
+    pb.authStore.clear()
+    setSession(null)
+    setActiveTab("main")
   }
 
   useEffect(() => {
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_, session) => {
-      setSession(session)
+    setSession(pb.authStore.record)
+
+    const removeListener = pb.authStore.onChange((_, record) => {
+      setSession(record)
     })
 
     return () => {
-      subscription?.unsubscribe()
+      removeListener()
     }
   }, [])
 
@@ -43,14 +39,15 @@ function IndexPopup() {
       <div className="plasmo-flex-1 plasmo-p-2">
         {activeTab === "main" ? (
           session ? (
-            <SaveUrl supabase={supabase} session={session} />
+            <SaveUrl pb={pb} session={session} />
           ) : (
-            <div className="plasmo-bg-pewter-gray/10 plasmo-rounded-md plasmo-px-4 plasmo-py-2.5 plasmo-text-center plasmo-text-sm">
+            <div className="plasmo-rounded-md plasmo-bg-pewter-gray/10 plasmo-px-4 plasmo-py-2.5 plasmo-text-center plasmo-text-sm">
               <span>Head over to the options tab to sign in</span>
             </div>
           )
         ) : (
           <Options
+            pb={pb}
             session={session}
             onSignOut={handleSignOut}
             loading={loading}
