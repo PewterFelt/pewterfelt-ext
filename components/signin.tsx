@@ -1,4 +1,5 @@
 /**
+ * @see https://pocketbase.io/docs/authentication/#authenticate-with-oauth2
  * @see https://github.com/pocketbase/js-sdk#auth-handlers
  * @see https://developer.chrome.com/docs/extensions/reference/api/identity#method-launchWebAuthFlow
  * @see https://developer.chrome.com/docs/extensions/how-to/integrate/oauth

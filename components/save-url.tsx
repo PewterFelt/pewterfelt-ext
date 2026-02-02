@@ -45,7 +45,10 @@ export const SaveUrl = ({ pb, session }: SaveUrlProps) => {
         }
 
         const bookmarkRecords = await pb.collection("bookmarks").getList(1, 1, {
-          filter: `user_id = "${session.id}" && link_id = "${linkRecords.items[0].id}"`
+          filter: pb.filter(`user = {:userId} && link = {:linkId}`, {
+            userId: session.id,
+            linkId: linkRecords.items[0].id
+          })
         })
 
         setIsBookmarked(bookmarkRecords.items.length > 0)
@@ -62,8 +65,8 @@ export const SaveUrl = ({ pb, session }: SaveUrlProps) => {
     setSaveStatus("idle")
 
     try {
-      const response = await fetch(
-        `${process.env.PLASMO_PUBLIC_API_URL}/api/link`,
+      await fetch(
+        `${process.env.PLASMO_PUBLIC_POCKETBASE_URL}/api/pewterfelt/link`,
         {
           method: "POST",
           headers: {
@@ -72,9 +75,11 @@ export const SaveUrl = ({ pb, session }: SaveUrlProps) => {
           },
           body: JSON.stringify({ url: urlInput })
         }
-      ).then((res) => res.json())
+      ).then((res) => {
+        console.log(res)
+        return res.json()
+      })
 
-      console.log("API Response:", response)
       setSaveStatus("success")
       setIsBookmarked(true)
     } catch (error) {
